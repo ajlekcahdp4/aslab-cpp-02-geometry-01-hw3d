@@ -1,35 +1,36 @@
+# Set up variables
+current_folder=${2:-./}
 base_folder="resources"
+passed=true
 
+# ASCII colors
 red=`tput setaf 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
 
-current_folder=${2:-./}
-passed=true
+cd $current_folder/$base_folder
 
-for file in ${current_folder}/${base_folder}/*.dat; do
-    echo -n "Testing ${green}${file}${reset} ... "
+for file in *.dat; do
+  # Total number of the tests found
+  count=`echo $file | grep -E -o [0-9]+`
 
-    # Check if an argument to executable location has been passed to the program
-    if [ -z "$1" ]; then
-        bin/intersect_fcl < $file > ${current_folder}/$base_folder/temp.tmp
-    else
-        $1 < $file > ${current_folder}/$base_folder/temp.tmp
-    fi
+  echo -n "Testing $green$file$reset ..."
 
-    # Compare inputs
-    if $3 ${file}.ans ${current_folder}/${base_folder}/temp.tmp; then
-        echo "${green}Passed${reset}"
-    else
-        echo "${red}Failed${reset}"
-        passed=false
-    fi
+  $1 < $file > ans.tmp
+
+  filename="${file}.ans"
+
+  if $3 $filename ans.tmp; then
+    echo "${green}Passed${reset}"
+  else
+    echo "${red}Failed${reset}"
+    passed=false
+  fi
 done
 
 if ${passed}
 then
-    exit 0
+  exit 0
 else
-    # Exit with the best number for an exit code
-    exit 666
+  exit 666
 fi
