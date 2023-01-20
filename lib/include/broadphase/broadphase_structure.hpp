@@ -12,6 +12,7 @@
 
 #include "narrowphase/collision_shape.hpp"
 #include <type_traits>
+#include <vector>
 
 namespace throttle {
 namespace geometry {

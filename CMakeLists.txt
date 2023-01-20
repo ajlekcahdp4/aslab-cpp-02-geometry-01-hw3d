@@ -68,8 +68,5 @@ if (SANITIZE)
     add_link_options(-fsanitize=address -fno-omit-frame-pointer)
 endif()
 
-# 3rd party variant implementation
-add_subdirectory(3rd-party/variant EXCLUDE_FROM_ALL)
-
 add_subdirectory(lib)
 add_subdirectory(test)

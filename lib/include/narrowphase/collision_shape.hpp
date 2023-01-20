@@ -16,7 +16,7 @@
 #include "primitives/segment3.hpp"
 #include "primitives/triangle3.hpp"
 
-#include <mpark/variant.hpp>
+#include <variant>
 
 namespace throttle {
 namespace geometry {
@@ -27,7 +27,7 @@ public:
   using point_type = point3<T>;
   using triangle_type = triangle3<T>;
   using aabb_type = axis_aligned_bb<T>;
-  using variant_type = mpark::variant<segment_type, point_type, triangle_type>;
+  using variant_type = std::variant<segment_type, point_type, triangle_type>;
 
 private:
   variant_type m_shape;
@@ -40,8 +40,8 @@ public:
 
   bool collide(const collision_shape &other) const {
     if (!m_aabb.intersect(other.m_aabb)) return false;
-    return mpark::visit([](auto &&first, auto &&second) -> bool { return intersect(first, second); }, m_shape,
-                        other.m_shape);
+    return std::visit([](auto &&first, auto &&second) -> bool { return intersect(first, second); }, m_shape,
+                      other.m_shape);
   }
 
   aabb_type bounding_box() const { return m_aabb; }
