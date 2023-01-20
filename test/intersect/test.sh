@@ -11,13 +11,8 @@ reset=`tput sgr0`
 cd $current_folder/$base_folder
 
 for file in *.dat; do
-  # Total number of the tests found
-  count=`echo $file | grep -E -o [0-9]+`
-
   echo -n "Testing $green$file$reset ..."
-
   $1 < $file > ans.tmp
-
   filename="${file}.ans"
 
   if $3 $filename ans.tmp; then
