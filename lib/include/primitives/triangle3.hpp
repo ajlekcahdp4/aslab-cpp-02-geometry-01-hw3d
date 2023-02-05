@@ -17,8 +17,8 @@
 #include <utility>
 
 #include "primitives/plane.hpp"
-#include "primitives/triangle2.hpp"
 #include "primitives/segment3.hpp"
+#include "primitives/triangle2.hpp"
 
 #include "point3.hpp"
 #include "vec3.hpp"
@@ -29,7 +29,7 @@ namespace geometry {
 template <typename> struct triangle3;
 
 namespace detail {
-template <typename T> bool triangle_triangle_intersect(const triangle3<T>&, const triangle3<T>&);
+template <typename T> bool triangle_triangle_intersect(const triangle3<T> &, const triangle3<T> &);
 }
 
 template <typename T> struct triangle3 {
@@ -46,15 +46,21 @@ template <typename T> struct triangle3 {
   plane_type plane_of() const { return plane_type{a, b, c}; }
   bool       lies_on_one_side(const plane_type &p_plane) const { return lie_on_the_same_side(p_plane, a, b, c); }
 
+  vec_type norm() const {
+    vec_type first = a - b, second = c - b;
+    if (is_roughly_equal(dot(first, second), T{})) return vec_type::zero();
+    return cross(second, first);
+  }
+
   flat_triangle_type project_coord(unsigned axis) const {
     return flat_triangle_type{a.project_coord(axis), b.project_coord(axis), c.project_coord(axis)};
   }
 
   bool intersect(const triangle3 &other) const { return detail::triangle_triangle_intersect(*this, other); }
-  
+
   bool intersect(const segment_type &seg) const {
     plane_type plane = plane_of();
-    auto intersection = plane.segment_intersection(seg);
+    auto       intersection = plane.segment_intersection(seg);
     if (!intersection) return false;
     auto max_index = plane.normal().max_component().first;
     return project_coord(max_index).point_in_triangle(intersection.value().project_coord(max_index));
@@ -133,8 +139,8 @@ template <typename T> bool triangle_triangle_intersect(const triangle3<T> &t1, c
       if (t2_flat.point_in_triangle(proj_first)) return true;
       if (!are_same_sign(vert_dist_arr[1].second, vert_dist_arr[2].second))
         return t2_flat.point_in_triangle(pi2.segment_intersection({vert_dist_arr[1].first, vert_dist_arr[2].first})
-                                      .value()
-                                      .project_coord(max_index));
+                                             .value()
+                                             .project_coord(max_index));
       return false;
     }
 
@@ -166,8 +172,8 @@ template <typename T> bool triangle_triangle_intersect(const triangle3<T> &t1, c
       if (t1_flat.point_in_triangle(proj_first)) return true;
       if (!are_same_sign(vert_dist_arr[1].second, vert_dist_arr[2].second))
         return t1_flat.point_in_triangle(pi1.segment_intersection({vert_dist_arr[1].first, vert_dist_arr[2].first})
-                                      .value()
-                                      .project_coord(max_index));
+                                             .value()
+                                             .project_coord(max_index));
       return false;
     }
 
