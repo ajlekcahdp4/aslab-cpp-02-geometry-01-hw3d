@@ -136,6 +136,12 @@ public:
     flush_waiting();
   }
 
+  T cell_size() const { return m_cell_size; }
+
+  auto cbegin() const { return m_stored_shapes.cbegin(); }
+
+  auto cend() const { return m_stored_shapes.cend(); }
+
 private:
   void insert(const shape_type &shape) { // insert shape into m_stored shapes and into m_map
     auto old_stored_size = m_stored_shapes.size();
