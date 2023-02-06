@@ -138,9 +138,9 @@ public:
 
   T cell_size() const { return m_cell_size; }
 
-  auto cbegin() const { return m_stored_shapes.cbegin(); }
+  auto begin() const { return m_stored_shapes.cbegin(); }
 
-  auto cend() const { return m_stored_shapes.cend(); }
+  auto end() const { return m_stored_shapes.cend(); }
 
 private:
   void insert(const shape_type &shape) { // insert shape into m_stored shapes and into m_map

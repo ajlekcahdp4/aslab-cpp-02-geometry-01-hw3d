@@ -205,9 +205,9 @@ private:
   };
 
 public:
-  auto cbegin() const { return m_nodes.cbegin(); }
+  auto begin() const { return m_nodes.cbegin(); }
 
-  auto cend() const { return m_nodes.cend(); }
+  auto end() const { return m_nodes.cend(); }
 
   std::vector<shape_ptr> many_to_many() {
     rebuid();
