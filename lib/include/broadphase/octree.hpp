@@ -44,7 +44,6 @@ private:
 
   unsigned m_max_depth;
   T        m_min_cell_size_half;
-  unsigned m_max_refs = 12;
 
   std::optional<T> m_max_coord, m_min_coord;
   struct octree_node {
@@ -210,7 +209,11 @@ public:
   auto cbegin() const { return m_nodes.cbegin(); }
   auto cend() const { return m_nodes.cend(); }
 
+  bool empty() const { return m_stored_shapes.empty() && m_waiting_queue.empty(); }
+
   std::vector<shape_ptr> many_to_many() {
+    if (empty()) return {};
+
     rebuid();
 
     many_to_many_collider collider{*this};

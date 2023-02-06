@@ -149,7 +149,6 @@ private:
     auto cell = compute_cell(shape);
 
     m_stored_shapes.emplace_back(shape, cell);
-
     m_map[cell].push_back(old_stored_size);
   }
 
