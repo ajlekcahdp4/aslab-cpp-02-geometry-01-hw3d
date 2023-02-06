@@ -206,8 +206,9 @@ private:
 
 public:
   auto begin() const { return m_nodes.cbegin(); }
-
   auto end() const { return m_nodes.cend(); }
+  auto cbegin() const { return m_nodes.cbegin(); }
+  auto cend() const { return m_nodes.cend(); }
 
   std::vector<shape_ptr> many_to_many() {
     rebuid();
@@ -218,6 +219,7 @@ public:
     std::vector<shape_ptr> result;
     std::transform(collider.in_collision.begin(), collider.in_collision.end(), std::back_inserter(result),
                    [&](const auto &elem) { return std::addressof(m_stored_shapes[elem]); });
+
     return result;
   }
 };
