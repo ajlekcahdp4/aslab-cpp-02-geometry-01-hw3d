@@ -52,8 +52,8 @@ class uniform_grid : public broadphase_structure<uniform_grid<T, t_shape>, t_sha
   using index_t = unsigned;
   using cell_type = int_vector_type;
 
-  T                    m_cell_size;     // grid's cells size
-  std::vector<t_shape> m_waiting_queue; // queue of shapes to insert
+  T                    m_cell_size = T{0}; // grid's cells size
+  std::vector<t_shape> m_waiting_queue;    // queue of shapes to insert
 
   // The vector of inserted elements and vectors from all the cells that the element overlaps
   using stored_shapes_elem_t = typename std::pair<t_shape, cell_type>;
