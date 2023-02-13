@@ -15,8 +15,8 @@
 #include <gtest/gtest.h>
 #include <numeric>
 
-#include "equal.hpp"
-#include "vec2.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/vec2.hpp"
 
 using vec = throttle::geometry::vec2<float>;
 using namespace throttle::geometry;
@@ -57,7 +57,7 @@ TEST(test_vec2, test_norm_zero) {
 }
 
 TEST(test_vec2, test_project_on_zero) {
-  vec  a{1, 2};
+  vec a{1, 2};
   auto zero = vec::zero();
   auto proj = a.project(zero);
 

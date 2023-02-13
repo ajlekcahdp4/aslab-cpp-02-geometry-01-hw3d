@@ -15,10 +15,10 @@
 #include <gtest/gtest.h>
 #include <numeric>
 
-#include "equal.hpp"
-#include "point3.hpp"
-#include "primitives/segment3.hpp"
-#include "vec3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/primitives/segment3.hpp"
+#include "geometry/vec3.hpp"
 
 using segment_type = typename throttle::geometry::segment3<float>;
 using point = typename throttle::geometry::point3<float>;
@@ -30,8 +30,8 @@ template struct throttle::geometry::segment3<float>;
 
 TEST(test_segment3, test_contain_point) {
   segment_type a({0, 0, 0}, {0, 0, 10});
-  point        p1{0, 0, 5};
-  point        p2{0, 0, 11};
+  point p1{0, 0, 5};
+  point p2{0, 0, 11};
   EXPECT_TRUE(a.contains(p1));
   EXPECT_FALSE(a.contains(p2));
 }

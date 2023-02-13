@@ -15,7 +15,7 @@
 #include <gtest/gtest.h>
 #include <numeric>
 
-#include "segment1.hpp"
+#include "geometry/segment1.hpp"
 
 using segment = typename throttle::geometry::segment1<float>;
 using namespace throttle::geometry;

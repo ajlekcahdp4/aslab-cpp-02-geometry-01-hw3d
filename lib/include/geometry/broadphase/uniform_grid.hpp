@@ -11,10 +11,10 @@
 #pragma once
 
 #include "broadphase_structure.hpp"
-#include "equal.hpp"
-#include "narrowphase/collision_shape.hpp"
-#include "point3.hpp"
-#include "vec3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/narrowphase/collision_shape.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/vec3.hpp"
 
 #include <algorithm>
 #include <array>
@@ -33,13 +33,13 @@ namespace geometry {
 
 namespace detail {
 template <typename T> vec3<int> convert_to_int_vector(const vec3<T> &vec) {
-  return vec3<int>{static_cast<int>(std::floor(vec.x)), static_cast<int>(std::floor(vec.y)),
-                   static_cast<int>(std::floor(vec.z))};
+  return vec3<int>{
+      static_cast<int>(std::floor(vec.x)), static_cast<int>(std::floor(vec.y)), static_cast<int>(std::floor(vec.z))};
 }
 } // namespace detail
 
 template <typename T, typename t_shape = collision_shape<T>,
-          typename = std::enable_if_t<std::is_base_of_v<collision_shape<T>, t_shape>>>
+    typename = std::enable_if_t<std::is_base_of_v<collision_shape<T>, t_shape>>>
 class uniform_grid : public broadphase_structure<uniform_grid<T, t_shape>, t_shape> {
   using shape_ptr = t_shape *;
 
@@ -52,8 +52,8 @@ class uniform_grid : public broadphase_structure<uniform_grid<T, t_shape>, t_sha
   using index_t = unsigned;
   using cell_type = int_vector_type;
 
-  T                    m_cell_size = T{0}; // grid's cells size
-  std::vector<t_shape> m_waiting_queue;    // queue of shapes to insert
+  T m_cell_size = T{0};                 // grid's cells size
+  std::vector<t_shape> m_waiting_queue; // queue of shapes to insert
 
   // The vector of inserted elements and vectors from all the cells that the element overlaps
   using stored_shapes_elem_t = typename std::pair<t_shape, cell_type>;
@@ -115,7 +115,7 @@ public:
 
     std::vector<shape_ptr> result;
     std::transform(collider.in_collision.begin(), collider.in_collision.end(), std::back_inserter(result),
-                   [&](const auto &idx) { return std::addressof(m_stored_shapes[idx].first); });
+        [&](const auto &idx) { return std::addressof(m_stored_shapes[idx].first); });
     return result;
   }
 
@@ -130,7 +130,7 @@ public:
     m_map.clear();
 
     std::transform(m_stored_shapes.begin(), m_stored_shapes.end(), std::back_inserter(m_waiting_queue),
-                   [&](const auto &pair) { return pair.first; });
+        [&](const auto &pair) { return pair.first; });
     m_stored_shapes.clear();
 
     flush_waiting();
@@ -174,8 +174,8 @@ private:
   }
 
   struct many_to_many_collider {
-    std::set<index_t>                        in_collision;
-    map_t                                   &map;
+    std::set<index_t> in_collision;
+    map_t &map;
     const std::vector<stored_shapes_elem_t> &stored_shapes;
 
     many_to_many_collider(map_t &map_a, const std::vector<stored_shapes_elem_t> &stored_shapes_a)

@@ -1,15 +1,15 @@
 #include <chrono>
 #include <iostream>
 
-#include "broadphase/broadphase_structure.hpp"
-#include "broadphase/bruteforce.hpp"
-#include "broadphase/octree.hpp"
-#include "broadphase/uniform_grid.hpp"
+#include "geometry/broadphase/broadphase_structure.hpp"
+#include "geometry/broadphase/bruteforce.hpp"
+#include "geometry/broadphase/octree.hpp"
+#include "geometry/broadphase/uniform_grid.hpp"
 
-#include "narrowphase/collision_shape.hpp"
-#include "primitives/plane.hpp"
-#include "primitives/triangle3.hpp"
-#include "vec3.hpp"
+#include "geometry/narrowphase/collision_shape.hpp"
+#include "geometry/primitives/plane.hpp"
+#include "geometry/primitives/triangle3.hpp"
+#include "geometry/vec3.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -36,8 +36,8 @@ using throttle::geometry::triangle3;
 using throttle::geometry::vec3;
 
 template <typename T>
-throttle::geometry::collision_shape<T> shape_from_three_points(const point3<T> &a, const point3<T> &b,
-                                                               const point3<T> &c) {
+throttle::geometry::collision_shape<T> shape_from_three_points(
+    const point3<T> &a, const point3<T> &b, const point3<T> &c) {
   auto ab = b - a, ac = c - a;
 
   if (throttle::geometry::colinear(ab, ac)) { // Either a segment or a point
@@ -47,10 +47,10 @@ throttle::geometry::collision_shape<T> shape_from_three_points(const point3<T> &
     // This is a segment. Project the the points onto the most closely alligned axis.
     auto max_index = ab.max_component().first;
 
-    std::array<std::pair<point3<T>, T>, 3> arr = {std::make_pair(a, a[max_index]), std::make_pair(b, b[max_index]),
-                                                  std::make_pair(c, c[max_index])};
-    std::sort(arr.begin(), arr.end(),
-              [](const auto &left, const auto &right) -> bool { return left.second < right.second; });
+    std::array<std::pair<point3<T>, T>, 3> arr = {
+        std::make_pair(a, a[max_index]), std::make_pair(b, b[max_index]), std::make_pair(c, c[max_index])};
+    std::sort(
+        arr.begin(), arr.end(), [](const auto &left, const auto &right) -> bool { return left.second < right.second; });
     return segment3<T>{arr[0].first, arr[2].first};
   }
 
@@ -59,11 +59,13 @@ throttle::geometry::collision_shape<T> shape_from_three_points(const point3<T> &
 
 static unsigned apporoximate_optimal_depth(unsigned number) {
   constexpr unsigned max_depth = 6;
-  unsigned           log_num = std::log10(float(number));
+  unsigned log_num = std::log10(float(number));
   return std::min(max_depth, log_num);
 }
 
-template <typename broad> bool application_loop(throttle::geometry::broadphase_structure<broad, indexed_geom> &cont, unsigned n, bool hide = false) {
+template <typename broad>
+bool application_loop(
+    throttle::geometry::broadphase_structure<broad, indexed_geom> &cont, unsigned n, bool hide = false) {
   using point_type = throttle::geometry::point3<float>;
 
   for (unsigned i = 0; i < n; ++i) {
@@ -89,11 +91,11 @@ int main(int argc, char *argv[]) {
   bool hide = false;
 
 #ifdef BOOST_FOUND__
-  std::string             opt;
+  std::string opt;
   po::options_description desc("Available options");
   desc.add_options()("help,h", "Print this help message")("measure,m", "Print perfomance metrics")(
       "hide", "Hide output")("broad", po::value<std::string>(&opt)->default_value("octree"),
-                             "Algorithm for broad phase (bruteforce, octree, uniform-grid)");
+      "Algorithm for broad phase (bruteforce, octree, uniform-grid)");
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -119,13 +121,13 @@ int main(int argc, char *argv[]) {
 
   if (opt == "octree") {
     throttle::geometry::octree<float, indexed_geom> octree{apporoximate_optimal_depth(n)};
-    if (!application_loop(octree, n, hide)) return 1;  
+    if (!application_loop(octree, n, hide)) return 1;
   } else if (opt == "bruteforce") {
     throttle::geometry::bruteforce<float, indexed_geom> bruteforce{n};
-    if (!application_loop(bruteforce, n, hide)) return 1;  
+    if (!application_loop(bruteforce, n, hide)) return 1;
   } else if (opt == "uniform-grid") {
     throttle::geometry::uniform_grid<float, indexed_geom> uniform{n};
-    if (!application_loop(uniform, n, hide)) return 1;  
+    if (!application_loop(uniform, n, hide)) return 1;
   }
 
   auto finish = std::chrono::high_resolution_clock::now();

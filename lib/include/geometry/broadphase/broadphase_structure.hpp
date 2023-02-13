@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "narrowphase/collision_shape.hpp"
+#include "geometry/narrowphase/collision_shape.hpp"
 #include <type_traits>
 #include <vector>
 
@@ -22,9 +22,9 @@ template <typename t_derived, typename shape_type> class broadphase_structure {
   using shape_ptr = shape_type *;
 
 public:
-  void                   add_collision_shape(const shape_type &shape) { impl().add_collision_shape(shape); }
-  derived_ref            impl() { return static_cast<derived_ref>(*this); }
-  void                   rebuild() { impl().rebuild(); }
+  void add_collision_shape(const shape_type &shape) { impl().add_collision_shape(shape); }
+  derived_ref impl() { return static_cast<derived_ref>(*this); }
+  void rebuild() { impl().rebuild(); }
   std::vector<shape_ptr> many_to_many() { return impl().many_to_many(); }
 };
 

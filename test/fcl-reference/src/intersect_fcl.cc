@@ -33,7 +33,7 @@ std::shared_ptr<triangle> read_triangle() {
   }
 
   return std::make_shared<triangle>(vec3{points[0], points[1], points[2]}, vec3{points[3], points[4], points[5]},
-                                    vec3{points[6], points[7], points[8]});
+      vec3{points[6], points[7], points[8]});
 }
 
 int main(int argc, char *argv[]) {
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
   }
 
   using model = fcl::BVHModel<fcl::OBBRSSf>;
-  std::vector<std::shared_ptr<triangle>>              vec;
+  std::vector<std::shared_ptr<triangle>> vec;
   std::vector<std::shared_ptr<fcl::CollisionObjectf>> objs;
 
   for (unsigned i = 0; i < n; ++i) {
@@ -63,8 +63,8 @@ int main(int argc, char *argv[]) {
   for (unsigned i = 0; i < n; ++i) {
     for (unsigned j = i + 1; j < n; ++j) {
       fcl::CollisionRequestf request(1, true);
-      fcl::CollisionResultf  result;
-      bool                   collide = fcl::collide(objs.at(i).get(), objs.at(j).get(), request, result);
+      fcl::CollisionResultf result;
+      bool collide = fcl::collide(objs.at(i).get(), objs.at(j).get(), request, result);
       if (collide) {
         in_collision.insert(i);
         in_collision.insert(j);
@@ -72,10 +72,10 @@ int main(int argc, char *argv[]) {
     }
   }
 #else
-  #error "Not yet implemented"
+#error "Not yet implemented"
 #endif
 
-  for (const auto &v: in_collision) {
+  for (const auto &v : in_collision) {
     std::cout << v << " ";
   }
 

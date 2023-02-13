@@ -8,10 +8,10 @@
  * ----------------------------------------------------------------------------
  */
 
+#include <fstream>
 #include <iostream>
 #include <set>
 #include <string>
-#include <fstream>
 
 #ifdef BOOST_FOUND__
 #include <boost/program_options.hpp>
@@ -23,7 +23,7 @@ bool contain_same(std::string name_a, std::string name_b) {
   std::ifstream file_a, file_b;
   file_a.open(name_a);
   file_b.open(name_b);
-  
+
   if (!file_a.is_open()) {
     std::cout << "Can't open " << name_a << " \n";
     return false;
@@ -53,8 +53,8 @@ int main(int argc, char *argv[]) {
 
 #ifdef BOOST_FOUND__
   po::options_description desc("Available options");
-  desc.add_options()("help,h", "Print this help message")("input-file", po::value<std::vector<std::string>>(),
-                                                          "File to be compared");
+  desc.add_options()("help,h", "Print this help message")(
+      "input-file", po::value<std::vector<std::string>>(), "File to be compared");
 
   po::positional_options_description p;
   p.add("input-file", -1);
@@ -77,9 +77,9 @@ int main(int argc, char *argv[]) {
       std::cout << "More than 2 files to compare\n";
       return 1;
     }
-    return (contain_same(input_files[0], input_files[1]) ? 0 : 1);  
-  } 
-  
+    return (contain_same(input_files[0], input_files[1]) ? 0 : 1);
+  }
+
   else {
     std::cout << "Nothing to do\n";
     return 1;

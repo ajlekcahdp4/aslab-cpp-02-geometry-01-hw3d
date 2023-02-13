@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include "equal.hpp"
-#include "point2.hpp"
-#include "segment1.hpp"
-#include "vec2.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/point2.hpp"
+#include "geometry/segment1.hpp"
+#include "geometry/vec2.hpp"
 
 namespace throttle {
 namespace geometry {
@@ -42,7 +42,7 @@ template <typename T> struct segment2 {
 
   bool intersect(const segment2 &other) const {
     const vec_type r = b - a, s = other.b - other.a;
-    const T        dir_cross = perp_dot(r, s);
+    const T dir_cross = perp_dot(r, s);
     const vec_type diff_start = other.a - a;
 
     if (is_roughly_equal(dir_cross, T{0})) {

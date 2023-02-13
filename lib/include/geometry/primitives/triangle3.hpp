@@ -16,12 +16,12 @@
 #include <cmath>
 #include <utility>
 
-#include "primitives/plane.hpp"
-#include "primitives/segment3.hpp"
-#include "primitives/triangle2.hpp"
+#include "geometry/primitives/plane.hpp"
+#include "geometry/primitives/segment3.hpp"
+#include "geometry/primitives/triangle2.hpp"
 
-#include "point3.hpp"
-#include "vec3.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/vec3.hpp"
 
 namespace throttle {
 namespace geometry {
@@ -44,7 +44,7 @@ template <typename T> struct triangle3 {
   point_type c;
 
   plane_type plane_of() const { return plane_type{a, b, c}; }
-  bool       lies_on_one_side(const plane_type &p_plane) const { return lie_on_the_same_side(p_plane, a, b, c); }
+  bool lies_on_one_side(const plane_type &p_plane) const { return lie_on_the_same_side(p_plane, a, b, c); }
 
   vec_type norm() const {
     vec_type first = a - b, second = c - b;
@@ -60,7 +60,7 @@ template <typename T> struct triangle3 {
 
   bool intersect(const segment_type &seg) const {
     plane_type plane = plane_of();
-    auto       intersection = plane.segment_intersection(seg);
+    auto intersection = plane.segment_intersection(seg);
     if (!intersection) return false;
     auto max_index = plane.normal().max_component().first;
     return project_coord(max_index).point_in_triangle(intersection.value().project_coord(max_index));
@@ -127,9 +127,8 @@ template <typename T> bool triangle_triangle_intersect(const triangle3<T> &t1, c
     using triangle_vertex_distance_pair = std::pair<typename triangle3<T>::point_type, T>;
     std::array<triangle_vertex_distance_pair, 3> vert_dist_arr = {
         std::make_pair(t1.a, d_1[0]), std::make_pair(t1.b, d_1[1]), std::make_pair(t1.c, d_1[2])};
-    std::sort(vert_dist_arr.begin(), vert_dist_arr.end(), [](const auto &p_first, const auto &p_second) {
-      return std::abs(p_first.second) < std::abs(p_second.second);
-    });
+    std::sort(vert_dist_arr.begin(), vert_dist_arr.end(),
+        [](const auto &p_first, const auto &p_second) { return std::abs(p_first.second) < std::abs(p_second.second); });
     auto max_index = pi2.normal().max_component().first;
     auto t2_flat = t2.project_coord(max_index);
 
@@ -146,7 +145,7 @@ template <typename T> bool triangle_triangle_intersect(const triangle3<T> &t1, c
 
     case 2: {
       return t2_flat.point_in_triangle(vert_dist_arr[0].first.project_coord(max_index)) ||
-             t2_flat.point_in_triangle(vert_dist_arr[1].first.project_coord(max_index));
+          t2_flat.point_in_triangle(vert_dist_arr[1].first.project_coord(max_index));
     }
 
     case 3: return t2_flat.intersect(t1.project_coord(max_index));
@@ -160,9 +159,8 @@ template <typename T> bool triangle_triangle_intersect(const triangle3<T> &t1, c
     using triangle_vertex_distance_pair = std::pair<typename triangle3<T>::point_type, T>;
     std::array<triangle_vertex_distance_pair, 3> vert_dist_arr = {
         std::make_pair(t2.a, d_2[0]), std::make_pair(t2.b, d_2[1]), std::make_pair(t2.c, d_2[2])};
-    std::sort(vert_dist_arr.begin(), vert_dist_arr.end(), [](const auto &p_first, const auto &p_second) {
-      return std::abs(p_first.second) < std::abs(p_second.second);
-    });
+    std::sort(vert_dist_arr.begin(), vert_dist_arr.end(),
+        [](const auto &p_first, const auto &p_second) { return std::abs(p_first.second) < std::abs(p_second.second); });
     auto max_index = pi1.normal().max_component().first;
     auto t1_flat = t1.project_coord(max_index);
 
@@ -179,7 +177,7 @@ template <typename T> bool triangle_triangle_intersect(const triangle3<T> &t1, c
 
     case 2: {
       return t1_flat.point_in_triangle(vert_dist_arr[0].first.project_coord(max_index)) ||
-             t1_flat.point_in_triangle(vert_dist_arr[1].first.project_coord(max_index));
+          t1_flat.point_in_triangle(vert_dist_arr[1].first.project_coord(max_index));
     }
 
     case 3: return t1_flat.intersect(t2.project_coord(max_index));

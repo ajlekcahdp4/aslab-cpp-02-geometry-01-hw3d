@@ -32,7 +32,9 @@ T vmax(const T &a, const T &b, Ts... args) {
 namespace geometry {
 
 // Precision to be used for floating point comparisons
-template <typename T> struct default_precision { static constexpr T m_prec = 1.0e-6f; };
+template <typename T> struct default_precision {
+  static constexpr T m_prec = 1.0e-6f;
+};
 
 template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 bool is_roughly_equal(T p_first, T p_second, T p_precision = default_precision<T>::m_prec) {

@@ -13,9 +13,9 @@
 #include <cmath>
 #include <type_traits>
 
-#include "equal.hpp"
-#include "point3.hpp"
-#include "vec3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/vec3.hpp"
 
 namespace throttle {
 namespace geometry {
@@ -25,9 +25,9 @@ template <typename T> struct axis_aligned_bb {
   using point_type = point3<T>;
 
   point_type m_center;
-  T          m_halfwidth_x;
-  T          m_halfwidth_y;
-  T          m_halfwidth_z;
+  T m_halfwidth_x;
+  T m_halfwidth_y;
+  T m_halfwidth_z;
 
   axis_aligned_bb(const point_type &p_center, T half_x, T half_y, T half_z)
       : m_center{p_center}, m_halfwidth_x{half_x}, m_halfwidth_y{half_y}, m_halfwidth_z{half_z} {}
@@ -42,7 +42,7 @@ template <typename T> struct axis_aligned_bb {
   template <typename... Ts, typename = std::enable_if_t<std::conjunction_v<std::is_convertible<Ts, point_type>...>>>
   axis_aligned_bb(Ts... points)
       : axis_aligned_bb(point_type{vmin(points.x...), vmin(points.y...), vmin(points.z...)},
-                        point_type{vmax(points.x...), vmax(points.y...), vmax(points.z...)}) {}
+            point_type{vmax(points.x...), vmax(points.y...), vmax(points.z...)}) {}
 
   point_type minimum_corner() const {
     return {m_center.x - m_halfwidth_x, m_center.y - m_halfwidth_y, m_center.z - m_halfwidth_z};

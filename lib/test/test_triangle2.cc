@@ -18,8 +18,8 @@
 #include <array>
 #include <cmath>
 
-#include "equal.hpp"
-#include "primitives/triangle2.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/primitives/triangle2.hpp"
 
 using triangle2 = throttle::geometry::triangle2<float>;
 using throttle::geometry::is_roughly_equal;

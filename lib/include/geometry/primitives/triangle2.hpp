@@ -13,10 +13,10 @@
 #include <cassert>
 #include <cmath>
 
-#include "equal.hpp"
-#include "point2.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/point2.hpp"
+#include "geometry/vec2.hpp"
 #include "segment2.hpp"
-#include "vec2.hpp"
 
 namespace throttle {
 namespace geometry {
@@ -36,7 +36,7 @@ template <typename T> struct triangle2 {
 public:
   bool point_in_triangle(const point_type &point) const {
     // Step 1. Check if the vectors ab and ac for a right oriented basis.
-    T         perp_product = perp_dot(b - a, c - a);
+    T perp_product = perp_dot(b - a, c - a);
     triangle2 right = (perp_product > 0 ? triangle2{a, b, c} : triangle2{a, c, b});
 
 #ifndef NDEBUG

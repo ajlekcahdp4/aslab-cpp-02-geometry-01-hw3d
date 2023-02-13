@@ -18,9 +18,9 @@
 #include <array>
 #include <cmath>
 
-#include "equal.hpp"
-#include "primitives/plane.hpp"
-#include "primitives/triangle3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/primitives/plane.hpp"
+#include "geometry/primitives/triangle3.hpp"
 
 using plane = throttle::geometry::plane<float>;
 using triangle3 = throttle::geometry::triangle3<float>;
@@ -37,7 +37,7 @@ TEST(test_triangle3, test_1) {
 
 TEST(test_triangle3, test_canonical) {
   triangle3 t1{{1, 2, 3}, {-1, 2, 3}, {5, 8, -1}};
-  plane     p{{1, 1, 1}, {0, 0, 1}};
+  plane p{{1, 1, 1}, {0, 0, 1}};
 
   std::array<float, 3> dist;
   dist[0] = p.signed_distance(t1.a);

@@ -82,14 +82,14 @@ template <typename T> vec2<T> operator*(T lhs, const vec2<T> &rhs) { return {rhs
 template <typename T> vec2<T> operator/(const vec2<T> &lhs, T rhs) { return {lhs.x / rhs, lhs.y / rhs}; }
 
 template <typename T>
-bool colinear(const vec2<T> &lhs, const vec2<T> &rhs,
-              T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
+bool colinear(
+    const vec2<T> &lhs, const vec2<T> &rhs, T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
   return is_roughly_equal(lhs.x * rhs.y, lhs.y * rhs.x, p_tolerance);
 }
 
 template <typename T>
-bool co_directional(const vec2<T> &lhs, const vec2<T> &rhs,
-                    T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
+bool co_directional(
+    const vec2<T> &lhs, const vec2<T> &rhs, T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
   return (colinear(lhs, rhs, p_tolerance) && dot(lhs, rhs) > 0);
 }
 
@@ -97,7 +97,6 @@ template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 bool is_roughly_equal(vec2<T> p_first, vec2<T> p_second, T p_precision = default_precision<T>::m_prec) {
   return is_roughly_equal(p_first.x, p_second.x, p_precision) && is_roughly_equal(p_first.y, p_second.y, p_precision);
 };
-
 
 } // namespace geometry
 } // namespace throttle

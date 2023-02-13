@@ -12,8 +12,8 @@
 
 #include <cmath>
 
-#include "point2.hpp"
-#include "vec2.hpp"
+#include "geometry/point2.hpp"
+#include "geometry/vec2.hpp"
 
 namespace throttle {
 namespace geometry {
@@ -24,14 +24,13 @@ template <typename T> struct line2 {
 
 private:
   vec_type m_normal; // Normalized normal vector
-  T        m_dist;   // Distance from origin
+  T m_dist;          // Distance from origin
 
-  vec_type compute_normal(const vec_type &p_vec) {
-    return vec_type{-p_vec.y, p_vec.x}.norm();
-  }
+  vec_type compute_normal(const vec_type &p_vec) { return vec_type{-p_vec.y, p_vec.x}.norm(); }
 
 public:
-  line2(const point_type &p_point, const vec_type &p_dir) : m_normal{compute_normal(p_dir)}, m_dist{dot(p_point - point_type::origin(), m_normal)} {}
+  line2(const point_type &p_point, const vec_type &p_dir)
+      : m_normal{compute_normal(p_dir)}, m_dist{dot(p_point - point_type::origin(), m_normal)} {}
   line2(const point_type &p_a, const point_type &p_b) : line2{p_a, p_b - p_a} {}
 
   static line2 line_x(T p_y = T{0}) { return line2{point_type{0, p_y}, vec_type{1, 0}}; }

@@ -17,8 +17,8 @@
 
 #include <cmath>
 
-#include "equal.hpp"
-#include "primitives/line2.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/primitives/line2.hpp"
 
 using line = throttle::geometry::line2<float>;
 using throttle::geometry::is_roughly_equal;

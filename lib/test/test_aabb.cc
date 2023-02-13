@@ -15,7 +15,7 @@
 #include <gtest/gtest.h>
 #include <numeric>
 
-#include "narrowphase/aabb.hpp"
+#include "geometry/narrowphase/aabb.hpp"
 
 using AABB = typename throttle::geometry::axis_aligned_bb<double>;
 using namespace throttle::geometry;

@@ -13,9 +13,9 @@
 #include <cmath>
 #include <optional>
 
-#include "point3.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/vec3.hpp"
 #include "segment3.hpp"
-#include "vec3.hpp"
 
 namespace throttle {
 namespace geometry {
@@ -27,7 +27,7 @@ template <typename T> struct plane {
 
 private:
   vec_type m_normal; // Normalized normal vector
-  T        m_dist;   // Distance from origin
+  T m_dist;          // Distance from origin
 
 public:
   plane(const point_type &p_point, const vec_type &p_normal)
@@ -75,13 +75,13 @@ template <typename T> T distance_from_plane(const plane<T> &p_plane, const point
 } // namespace geometry
 } // namespace throttle
 
-#include "equal.hpp"
+#include "geometry/equal.hpp"
 
 namespace throttle {
 namespace geometry {
 
 template <typename T, typename... Ts,
-          typename = std::enable_if_t<std::conjunction_v<std::is_convertible<Ts, point3<T>>...>>>
+    typename = std::enable_if_t<std::conjunction_v<std::is_convertible<Ts, point3<T>>...>>>
 bool lie_on_the_same_side(const plane<T> &p_plane, Ts... p_points) {
   return are_same_sign(p_plane.signed_distance(p_points)...);
 }

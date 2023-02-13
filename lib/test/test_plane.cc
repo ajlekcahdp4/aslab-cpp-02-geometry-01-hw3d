@@ -17,8 +17,8 @@
 
 #include <cmath>
 
-#include "equal.hpp"
-#include "primitives/plane.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/primitives/plane.hpp"
 
 using plane = throttle::geometry::plane<float>;
 using throttle::geometry::is_roughly_equal;
@@ -60,7 +60,7 @@ TEST(test_plane, test_4) {
 TEST(test_plane, test_5) {
   using segment = plane::segment_type;
   plane p = plane::plane_xy();
-  
+
   segment s1{{0, 0, -5}, {0, 0, 3}};
   auto i1 = p.segment_intersection(s1);
   EXPECT_TRUE(i1);

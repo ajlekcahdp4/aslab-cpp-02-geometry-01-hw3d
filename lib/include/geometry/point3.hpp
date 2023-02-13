@@ -24,7 +24,7 @@ template <typename T> struct point3 {
   T z;
 
   using point_flat_type = point2<T>;
-  static point3          origin() { return {0, 0, 0}; }
+  static point3 origin() { return {0, 0, 0}; }
   std::pair<unsigned, T> max_component() const { return (*this - origin()).max_component(); }
 
   T &operator[](unsigned index) {
@@ -68,8 +68,8 @@ namespace geometry {
 
 template <typename T, typename... Ts, typename = std::enable_if_t<std::conjunction_v<std::is_same<point3<T>, Ts>...>>>
 point3<T> barycentric_average(Ts... points) {
-  return point3<T>{(... + points.x) / T{sizeof...(Ts)}, (... + points.y) / T{sizeof...(Ts)},
-                   (... + points.z) / T{sizeof...(Ts)}};
+  return point3<T>{
+      (... + points.x) / T{sizeof...(Ts)}, (... + points.y) / T{sizeof...(Ts)}, (... + points.z) / T{sizeof...(Ts)}};
 }
 
 template <typename T> vec3<T> operator-(const point3<T> &lhs, const point3<T> &rhs) {
@@ -87,7 +87,7 @@ template <typename T> point3<T> operator+(const vec3<T> &lhs, const point3<T> &r
 template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 bool is_roughly_equal(point3<T> p_first, point3<T> p_second, T p_precision = default_precision<T>::m_prec) {
   return is_roughly_equal(p_first.x, p_second.x, p_precision) && is_roughly_equal(p_first.y, p_second.y, p_precision) &&
-         is_roughly_equal(p_first.z, p_second.z, p_precision);
+      is_roughly_equal(p_first.z, p_second.z, p_precision);
 };
 
 } // namespace geometry

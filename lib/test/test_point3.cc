@@ -15,9 +15,9 @@
 #include <gtest/gtest.h>
 #include <numeric>
 
-#include "equal.hpp"
-#include "point3.hpp"
-#include "vec3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/vec3.hpp"
 
 using point = throttle::geometry::point3<float>;
 using vec = throttle::geometry::vec3<float>;
@@ -38,15 +38,15 @@ TEST(TestPoint3, TestSubscriptOperator_1) {
 TEST(TestPoint3, TestDifference) {
   point a{1, 3, 5};
   point b{10, 16, 24};
-  auto  res = b - a;
-  vec   right{9, 13, 19};
+  auto res = b - a;
+  vec right{9, 13, 19};
   EXPECT_EQ(res, right);
 }
 
 TEST(TestPoint3, TestAdd) {
   point a{1, 3, 5};
-  vec   b{10, 16, 24};
-  auto  res = b + a;
+  vec b{10, 16, 24};
+  auto res = b + a;
   point right{11, 19, 29};
   EXPECT_EQ(res, right);
 }

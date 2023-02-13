@@ -11,10 +11,10 @@
 
 #include <cmath>
 
-#include "equal.hpp"
-#include "point3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/vec3.hpp"
 #include "segment2.hpp"
-#include "vec3.hpp"
 
 namespace throttle {
 namespace geometry {

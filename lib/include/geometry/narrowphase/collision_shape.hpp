@@ -10,11 +10,11 @@
 
 #pragma once
 
-#include "equal.hpp"
-#include "narrowphase/aabb.hpp"
-#include "point3.hpp"
-#include "primitives/segment3.hpp"
-#include "primitives/triangle3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/narrowphase/aabb.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/primitives/segment3.hpp"
+#include "geometry/primitives/triangle3.hpp"
 
 #include <variant>
 
@@ -31,7 +31,7 @@ public:
 
 private:
   variant_type m_shape;
-  aabb_type    m_aabb;
+  aabb_type m_aabb;
 
 public:
   collision_shape(const segment_type &seg) : m_shape{seg}, m_aabb{seg.a, seg.b} {}
@@ -40,8 +40,8 @@ public:
 
   bool collide(const collision_shape &other) const {
     if (!m_aabb.intersect(other.m_aabb)) return false;
-    return std::visit([](auto &&first, auto &&second) -> bool { return intersect(first, second); }, m_shape,
-                      other.m_shape);
+    return std::visit(
+        [](auto &&first, auto &&second) -> bool { return intersect(first, second); }, m_shape, other.m_shape);
   }
 
   aabb_type bounding_box() const { return m_aabb; }

@@ -15,7 +15,7 @@
 #include <gtest/gtest.h>
 #include <numeric>
 
-#include "equal.hpp"
+#include "geometry/equal.hpp"
 using namespace throttle::geometry;
 
 TEST(test_equal, test_1) {

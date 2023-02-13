@@ -83,9 +83,9 @@ template <typename T> struct vec3 {
 namespace throttle {
 namespace geometry {
 
-template <typename T> T       dot(vec3<T> lhs, vec3<T> rhs) { return lhs.dot(rhs); }
+template <typename T> T dot(vec3<T> lhs, vec3<T> rhs) { return lhs.dot(rhs); }
 template <typename T> vec3<T> cross(vec3<T> lhs, vec3<T> rhs) { return lhs.cross(rhs); }
-template <typename T> T       triple_product(vec3<T> a, vec3<T> b, vec3<T> c) { return dot(a, cross(b, c)); }
+template <typename T> T triple_product(vec3<T> a, vec3<T> b, vec3<T> c) { return dot(a, cross(b, c)); }
 
 template <typename T> vec3<T> operator+(const vec3<T> &lhs, const vec3<T> &rhs) { return vec3<T>{lhs} += rhs; }
 template <typename T> vec3<T> operator-(const vec3<T> &lhs, const vec3<T> &rhs) { return vec3<T>{lhs} -= rhs; }
@@ -95,21 +95,21 @@ template <typename T> vec3<T> operator*(T lhs, const vec3<T> &rhs) { return {rhs
 template <typename T> vec3<T> operator/(const vec3<T> &lhs, T rhs) { return {lhs.x / rhs, lhs.y / rhs, lhs.z / rhs}; }
 
 template <typename T>
-bool colinear(const vec3<T> &lhs, const vec3<T> &rhs,
-              T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
+bool colinear(
+    const vec3<T> &lhs, const vec3<T> &rhs, T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
   return is_roughly_equal(cross(lhs, rhs), vec3<T>::zero(), p_tolerance);
 }
 
 template <typename T>
-bool co_directional(const vec3<T> &lhs, const vec3<T> &rhs,
-                    T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
+bool co_directional(
+    const vec3<T> &lhs, const vec3<T> &rhs, T p_tolerance = ::throttle::geometry::default_precision<T>::m_prec) {
   return (colinear(lhs, rhs, p_tolerance) && dot(lhs, rhs) > 0);
 }
 
 template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 bool is_roughly_equal(vec3<T> p_first, vec3<T> p_second, T p_precision = default_precision<T>::m_prec) {
   return is_roughly_equal(p_first.x, p_second.x, p_precision) && is_roughly_equal(p_first.y, p_second.y, p_precision) &&
-         is_roughly_equal(p_first.z, p_second.z, p_precision);
+      is_roughly_equal(p_first.z, p_second.z, p_precision);
 };
 
 } // namespace geometry

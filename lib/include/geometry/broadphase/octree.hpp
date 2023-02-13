@@ -11,12 +11,12 @@
 #pragma once
 
 #include "broadphase_structure.hpp"
-#include "narrowphase/aabb.hpp"
-#include "narrowphase/collision_shape.hpp"
+#include "geometry/narrowphase/aabb.hpp"
+#include "geometry/narrowphase/collision_shape.hpp"
 
-#include "equal.hpp"
-#include "point3.hpp"
-#include "vec3.hpp"
+#include "geometry/equal.hpp"
+#include "geometry/point3.hpp"
+#include "geometry/vec3.hpp"
 
 #include <algorithm>
 #include <array>
@@ -29,7 +29,7 @@ namespace throttle {
 namespace geometry {
 
 template <typename T, typename t_shape = collision_shape<T>,
-          typename = std::enable_if_t<std::is_base_of_v<collision_shape<T>, t_shape>>>
+    typename = std::enable_if_t<std::is_base_of_v<collision_shape<T>, t_shape>>>
 class octree : public broadphase_structure<octree<T, t_shape>, t_shape> {
   using shape_ptr = t_shape *;
   using point_type = point3<T>;
@@ -40,17 +40,17 @@ public:
 
 private:
   std::vector<shape_type> m_stored_shapes;
-  std::vector<t_shape>    m_waiting_queue;
+  std::vector<t_shape> m_waiting_queue;
 
   unsigned m_max_depth;
-  T        m_min_cell_size_half;
+  T m_min_cell_size_half;
 
   std::optional<T> m_max_coord, m_min_coord;
   struct octree_node {
-    point_type              m_center;
-    T                       m_halfwidth;
+    point_type m_center;
+    T m_halfwidth;
     std::array<unsigned, 8> m_children;
-    std::vector<unsigned>   m_contained_shape_indexes;
+    std::vector<unsigned> m_contained_shape_indexes;
 
     octree_node(point_type center, T halfwidth)
         : m_center{center}, m_halfwidth{halfwidth}, m_children{}, m_contained_shape_indexes{} {}
@@ -62,9 +62,9 @@ private:
 
   void insert_shape_impl(unsigned root_index, const shape_type &shape, unsigned shape_pos) {
     unsigned index = 0;
-    bool     straddling = false;
+    bool straddling = false;
 
-    auto         bbox = shape.bounding_box();
+    auto bbox = shape.bounding_box();
     octree_node &curr_node = m_nodes[root_index];
 
     for (unsigned i = 0; i < 3; ++i) {
@@ -103,7 +103,7 @@ private:
     if (!stop || (halfwidth < m_min_cell_size_half)) return index;
 
     vec_type offset = vec_type::zero();
-    T        step = halfwidth * T{0.5f};
+    T step = halfwidth * T{0.5f};
     for (unsigned i = 0; i < 8; ++i) {
       offset.x = ((i & 1) ? step : -step);
       offset.y = ((i & 2) ? step : -step);
@@ -164,7 +164,7 @@ public:
 
     // Copy shapes from stored buffer to waiting queue.
     std::transform(m_stored_shapes.begin(), m_stored_shapes.end(), std::back_inserter(m_waiting_queue),
-                   [](const auto &elem) { return elem; });
+        [](const auto &elem) { return elem; });
     m_stored_shapes.clear();
 
     preconstruct();
@@ -174,8 +174,8 @@ public:
 private:
   struct many_to_many_collider {
     std::vector<unsigned> ancestor_stack;
-    const octree         &tree;
-    std::set<unsigned>    in_collision;
+    const octree &tree;
+    std::set<unsigned> in_collision;
 
     many_to_many_collider(const octree &p_tree) : tree{p_tree} { ancestor_stack.reserve(tree.m_max_depth); }
 
@@ -221,7 +221,7 @@ public:
 
     std::vector<shape_ptr> result;
     std::transform(collider.in_collision.begin(), collider.in_collision.end(), std::back_inserter(result),
-                   [&](const auto &elem) { return std::addressof(m_stored_shapes[elem]); });
+        [&](const auto &elem) { return std::addressof(m_stored_shapes[elem]); });
 
     return result;
   }

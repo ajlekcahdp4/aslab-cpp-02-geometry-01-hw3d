@@ -1,9 +1,5 @@
-set(LIBRARY_SOURCES
-  src/temp.cc
-)
-
-add_library(throttle ${LIBRARY_SOURCES})
-target_include_directories(throttle PUBLIC include)
+add_library(throttle INTERFACE)
+target_include_directories(throttle INTERFACE include)
 
 set(UNIT_TEST_SOURCES
   test/main.cc
@@ -22,7 +18,7 @@ set(UNIT_TEST_SOURCES
   test/test_triangle2.cc
 )
 
-if (ENABLE_GTEST)
+if (ENABLE_GTEST AND NOT HW3D_DISABLE_TESTS__)
   add_executable(unit_test ${UNIT_TEST_SOURCES})
   target_include_directories(unit_test PRIVATE src include)
   target_link_libraries(unit_test throttle ${GTEST_BOTH_LIBRARIES})
